@@ -480,16 +480,18 @@ with st.expander("Settings & Configuration", expanded=False):
     col_api, col_search, col_density = st.columns([2, 1, 1])
     
     with col_api:
-        api_key = st.text_input(
-            "Gemini API Key", 
-            value=st.session_state["api_key_loaded"], 
-            type="password",
-            help="Pre-configured with a default key, loaded from .env, or paste your own key."
-        )
         if env_key:
-            st.markdown("<div style='font-size: 11px; color: #10b981; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;'>API Key loaded from environment file</div>", unsafe_allow_html=True)
+            api_key = env_key
+            st.markdown("<div style='font-size: 13px; font-weight: 700; color: #0f172a; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 1px;'>Gemini API Key</div>", unsafe_allow_html=True)
+            st.markdown("<div style='font-size: 11px; color: #047857; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; border: 1px solid #d1fae5; background-color: #ecfdf5; padding: 8px 16px; display: inline-block;'>Secure Connection Active</div>", unsafe_allow_html=True)
         else:
-            st.markdown("<div style='font-size: 11px; color: #f59e0b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;'>Using shared default API key</div>", unsafe_allow_html=True)
+            api_key = st.text_input(
+                "Gemini API Key", 
+                value="", 
+                type="password",
+                help="Provide your own Gemini API Key from Google AI Studio to run the audit."
+            )
+            st.markdown("<div style='font-size: 11px; color: #64748b; font-weight: 500; letter-spacing: 0.5px;'>No system key detected. Please input your key.</div>", unsafe_allow_html=True)
             
     with col_search:
         max_search_results = st.slider("Web Search Sources", min_value=1, max_value=10, value=4)
