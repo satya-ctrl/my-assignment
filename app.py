@@ -9,81 +9,69 @@ st.set_page_config(
     page_title="TruthLayer AI - Document Fact-Checker",
     page_icon="🟢",
     layout="wide",
-    initial_sidebar_state="expanded"
+    initial_sidebar_state="collapsed"
 )
 
-# Injected Custom CSS for premium light-mode SaaS design
+# Injected Custom CSS for premium light-mode SaaS/Luxury design
 st.markdown("""
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800&display=swap');
 
 /* Main font styling */
 html, body, [class*="css"] {
-    font-family: 'Plus Jakarta Sans', sans-serif !important;
+    font-family: 'Space Grotesk', sans-serif !important;
 }
 
 /* Base Light Mode Colors & Styling */
 .stApp {
-    background-color: #f8fafc !important;
-    color: #334155 !important;
-}
-
-/* Header styling override to fix dark black bar at top */
-header[data-testid="stHeader"] {
-    background-color: #f8fafc !important;
-    border-bottom: 1px solid #e2e8f0 !important;
-}
-
-header[data-testid="stHeader"] * {
-    color: #475569 !important;
-}
-
-/* Sidebar styling override */
-[data-testid="stSidebar"] {
     background-color: #ffffff !important;
-    border-right: 1px solid #e2e8f0 !important;
-    box-shadow: 2px 0 12px rgba(0, 0, 0, 0.02) !important;
-}
-
-/* Aggressive Sidebar text color overrides for visibility */
-[data-testid="stSidebar"] * {
-    color: #475569 !important;
-}
-
-[data-testid="stSidebar"] h1, 
-[data-testid="stSidebar"] h2, 
-[data-testid="stSidebar"] h3, 
-[data-testid="stSidebar"] h4, 
-[data-testid="stSidebar"] h5, 
-[data-testid="stSidebar"] h6 {
     color: #0f172a !important;
 }
 
-/* Title colors in sidebar */
-.sidebar-title {
-    font-size: 24px !important;
-    font-weight: 800 !important;
-    background: linear-gradient(135deg, #1ba0fc 0%, #a855f7 40%, #e53f7b 70%, #fd7443 100%);
-    -webkit-background-clip: text !important;
-    -webkit-text-fill-color: transparent !important;
-    text-align: center !important;
-    margin-bottom: 2px !important;
-    letter-spacing: -0.5px !important;
+/* Hide Streamlit Sidebar completely */
+[data-testid="stSidebar"] {
+    display: none !important;
+}
+[data-testid="collapsedControl"] {
+    display: none !important;
 }
 
-.sidebar-subtitle {
-    color: #64748b !important;
+/* Clean Header styling */
+header[data-testid="stHeader"] {
+    background-color: #ffffff !important;
+    border-bottom: 1px solid #f1f5f9 !important;
 }
 
-/* Alert text overrides in sidebar */
-[data-testid="stSidebar"] .custom-alert-success * {
-    color: #047857 !important;
+header[data-testid="stHeader"] * {
+    color: #0f172a !important;
 }
-[data-testid="stSidebar"] .custom-alert-warning * {
-    color: #b45309 !important;
+
+/* Navigation bar mockup */
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 0;
+    border-bottom: 1px solid #e2e8f0;
+    margin-bottom: 32px;
 }
-[data-testid="stSidebar"] .custom-alert-error * {
-    color: #be123c !important;
+
+.nav-links {
+    display: flex;
+    gap: 32px;
+}
+
+.nav-link {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    color: #475569 !important;
+    text-decoration: none !important;
+}
+
+.nav-link:hover {
+    color: #0f172a !important;
 }
 
 /* Modern Typography */
@@ -96,97 +84,133 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Header style overrides */
 .main-title {
-    font-size: 42px !important;
+    font-size: 48px !important;
     font-weight: 800 !important;
     background: linear-gradient(135deg, #1ba0fc 0%, #a855f7 40%, #e53f7b 70%, #fd7443 100%);
     -webkit-background-clip: text !important;
     -webkit-text-fill-color: transparent !important;
+    margin-top: 16px !important;
     margin-bottom: 8px !important;
     letter-spacing: -1.5px !important;
+    text-align: center !important;
 }
 
 .subtitle {
-    font-size: 16px !important;
+    font-size: 14px !important;
     color: #64748b !important;
-    font-weight: 400 !important;
-    margin-bottom: 24px !important;
+    font-weight: 500 !important;
+    margin-bottom: 32px !important;
     line-height: 1.6 !important;
+    text-align: center !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
 }
 
-
-/* Custom fade-in & slide-up entrance animation */
-@keyframes fadeInUp {
-    from {
-        opacity: 0;
-        transform: translateY(16px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+/* Full-screen Loading Overlay matching Sidewave loader */
+.loader-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: #09090b !important;
+    z-index: 999999 !important;
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    color: #ffffff !important;
 }
 
-/* Stagger animations for list items */
-.animated-item {
-    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+.loader-spinner {
+    width: 70px;
+    height: 70px;
+    border: 2px solid rgba(255, 255, 255, 0.05);
+    border-radius: 50%;
+    border-top-color: #a855f7;
+    border-bottom-color: #1ba0fc;
+    animation: rotate 1.5s cubic-bezier(0.53, 0.21, 0.29, 0.87) infinite;
+    margin-bottom: 24px;
 }
 
-/* Custom cards for claim results */
-.metric-card {
-    background: #ffffff;
-    border-radius: 16px;
-    padding: 24px;
-    border: 1px solid #e2e8f0;
-    text-align: center;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.01);
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.metric-card:hover {
-    transform: translateY(-4px);
-    box-shadow: 0 16px 24px -4px rgba(0, 0, 0, 0.06), 0 8px 12px -3px rgba(0, 0, 0, 0.03);
-    border-color: #cbd5e1;
-}
-
-/* Stagger metric cards animations */
-.metric-card-1 { animation-delay: 0.05s; }
-.metric-card-2 { animation-delay: 0.1s; }
-.metric-card-3 { animation-delay: 0.15s; }
-.metric-card-4 { animation-delay: 0.2s; }
-
-.metric-value {
-    font-size: 38px;
-    font-weight: 800;
-    margin-bottom: 6px;
-    letter-spacing: -1.5px;
-    font-family: 'Outfit', sans-serif !important;
-}
-
-.metric-label {
+.loader-text {
     font-size: 12px;
-    color: #64748b;
-    font-weight: 600;
+    font-weight: 700;
+    letter-spacing: 5px;
     text-transform: uppercase;
-    letter-spacing: 1px;
+    margin-bottom: 12px;
+    animation: pulse 2s infinite;
+    background: linear-gradient(135deg, #1ba0fc 0%, #a855f7 40%, #e53f7b 70%, #fd7443 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-/* Color codes */
-.color-verified { color: #10b981; }
-.color-inaccurate { color: #f59e0b; }
-.color-false { color: #ef4444; }
-.color-total { color: #4f46e5; }
+.loader-subtext {
+    font-size: 11px;
+    color: #a1a1aa;
+    letter-spacing: 1px;
+    font-family: 'Space Grotesk', sans-serif;
+}
+
+@keyframes rotate {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0% { opacity: 0.6; }
+    50% { opacity: 1; }
+    100% { opacity: 0.6; }
+}
+
+/* Custom cards / lines for claim results (Sidewave Stats Inspired) */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    border-top: 1px solid #cbd5e1;
+    border-bottom: 1px solid #cbd5e1;
+    margin: 40px 0;
+    padding: 32px 0;
+    background-color: #ffffff;
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.stats-item {
+    text-align: center;
+    border-right: 1px solid #e2e8f0;
+}
+
+.stats-item:last-child {
+    border-right: none;
+}
+
+.stats-number {
+    font-size: 64px !important;
+    font-weight: 800 !important;
+    font-family: 'Outfit', sans-serif !important;
+    line-height: 1 !important;
+    letter-spacing: -2px !important;
+    margin-bottom: 8px !important;
+}
+
+.stats-label {
+    font-size: 11px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    color: #64748b !important;
+}
 
 /* Custom badges */
 .custom-badge {
     display: inline-flex;
     align-items: center;
-    padding: 4px 12px;
-    border-radius: 100px;
-    font-size: 11px;
-    font-weight: 600;
+    padding: 2px 10px;
+    border-radius: 0px;
+    font-size: 10px;
+    font-weight: 700;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 1px;
     margin-right: 12px;
 }
 
@@ -208,102 +232,105 @@ h1, h2, h3, h4, h5, h6 {
     border: 1px solid #ffe4e6;
 }
 
-/* Truth Score Card */
+/* Truth Score Bar */
 .truth-score-container {
     background: #ffffff;
-    border-radius: 16px;
-    padding: 24px;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03);
+    border: 1px solid #cbd5e1;
+    padding: 32px;
     margin-top: 24px;
-    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-    animation-delay: 0.25s;
+    animation: fadeInUp 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation-delay: 0.1s;
 }
 
 .truth-score-bg {
     background-color: #f1f5f9;
-    border-radius: 100px;
-    height: 10px;
+    height: 8px;
     width: 100%;
-    margin-top: 10px;
+    margin-top: 12px;
     overflow: hidden;
 }
 
 .truth-score-fill {
     height: 100%;
-    border-radius: 100px;
-    background: linear-gradient(90deg, #4f46e5, #10b981);
+    background: linear-gradient(90deg, #1ba0fc, #a855f7);
     transition: width 1.2s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-/* Aggressive custom style overrides to fix the dark file uploader dropzone */
+/* File Uploader styling */
 [data-testid="stFileUploader"] {
     background-color: #ffffff !important;
-    border: 2px dashed #cbd5e1 !important;
-    border-radius: 16px !important;
-    padding: 20px !important;
+    border: 1px solid #0f172a !important;
+    border-radius: 0px !important;
+    padding: 32px !important;
+    animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-/* Target the inner dropzone section directly */
 [data-testid="stFileUploader"] > section {
-    background-color: #f8fafc !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 12px !important;
-    padding: 32px 24px !important;
-}
-
-/* Force all text inside uploader to be dark slate */
-[data-testid="stFileUploader"] * {
-    color: #475569 !important;
-}
-
-/* Override dark background set on inner drag-and-drop elements */
-[data-testid="stFileUploaderDropzone"] {
-    background-color: #f8fafc !important;
-    border: none !important;
-}
-
-/* Style the file uploader browse button */
-[data-testid="stFileUploader"] button[data-testid="baseButton-secondary"] {
     background-color: #ffffff !important;
-    border: 1px solid #cbd5e1 !important;
+    border: 1px dashed #cbd5e1 !important;
+    border-radius: 0px !important;
+    padding: 40px 24px !important;
+}
+
+[data-testid="stFileUploader"] * {
     color: #0f172a !important;
-    border-radius: 8px !important;
-    font-weight: 600 !important;
-    padding: 6px 16px !important;
+    background-color: transparent !important;
 }
 
-/* Premium Primary Buttons */
-.stButton>button {
-    background-color: #4f46e5 !important;
+[data-testid="stFileUploaderDropzone"] {
+    background-color: #ffffff !important;
+    border: none !important;
+}
+
+[data-testid="stFileUploader"] button[data-testid="baseButton-secondary"] {
+    background-color: #0f172a !important;
+    border: 1px solid #0f172a !important;
     color: #ffffff !important;
-    border-radius: 8px !important;
-    padding: 10px 24px !important;
-    border: none !important;
+    border-radius: 0px !important;
     font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+    font-size: 11px !important;
+    padding: 8px 24px !important;
+    transition: all 0.3s ease !important;
+}
+
+[data-testid="stFileUploader"] button[data-testid="baseButton-secondary"]:hover {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+}
+
+/* Premium Primary/Secondary Buttons (Cartier Style) */
+.stButton>button, .stDownloadButton>button {
+    background-color: #0f172a !important;
+    color: #ffffff !important;
+    border-radius: 0px !important;
+    padding: 12px 32px !important;
+    border: 1px solid #0f172a !important;
+    font-weight: 600 !important;
+    font-size: 11px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
     transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
-    box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.15) !important;
+    box-shadow: none !important;
 }
 
-.stButton>button:hover {
-    background-color: #4338ca !important;
-    transform: translateY(-1px) !important;
-    box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.25) !important;
-    border: none !important;
+.stButton>button:hover, .stDownloadButton>button:hover {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #0f172a !important;
 }
 
-/* Custom Premium Alerts (Replacements for st.info / st.success) */
+/* Custom HTML Alerts */
 .custom-alert {
     background: #ffffff;
     border: 1px solid #e2e8f0;
-    border-radius: 12px;
-    padding: 16px 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+    border-radius: 0px;
+    padding: 20px;
+    margin-bottom: 24px;
     display: flex;
     align-items: center;
     gap: 12px;
-    animation: fadeInUp 0.4s ease;
 }
 
 .custom-alert-success {
@@ -327,94 +354,106 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .custom-alert-text {
-    font-size: 14px;
-    color: #334155;
+    font-size: 13px;
+    color: #1e293b;
     font-weight: 500;
-    line-height: 1.5;
 }
 
-/* Sidebar Inputs and Sliders Customization */
+/* Settings Expander styling */
+div[data-testid="stExpander"] {
+    background-color: #ffffff !important;
+    border: none !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+    border-radius: 0px !important;
+    box-shadow: none !important;
+    margin-bottom: 24px !important;
+}
+
+div[data-testid="stExpander"] > details > summary {
+    padding: 16px 0 !important;
+    background-color: #ffffff !important;
+    color: #475569 !important;
+    font-weight: 700 !important;
+    font-size: 12px !important;
+    text-transform: uppercase !important;
+    letter-spacing: 2px !important;
+    border: none !important;
+    outline: none !important;
+}
+
+div[data-testid="stExpander"] > details > summary:hover {
+    color: #0f172a !important;
+}
+
+div[data-testid="stExpander"] > details > summary ~ div {
+    padding: 24px 0 !important;
+    border-top: none !important;
+    background-color: #ffffff !important;
+}
+
+/* Settings input custom layouts */
 div[data-testid="stTextInput"] input {
-    background-color: #f8fafc !important;
+    background-color: #ffffff !important;
     border: 1px solid #cbd5e1 !important;
     color: #0f172a !important;
-    border-radius: 8px !important;
-    font-size: 14px !important;
+    border-radius: 0px !important;
+    font-size: 13px !important;
+    padding: 8px 12px !important;
 }
 
 div[data-testid="stTextInput"] input:focus {
-    border-color: #4f46e5 !important;
-    box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.1) !important;
+    border-color: #0f172a !important;
 }
 
-/* Style Streamlit Sliders to match the theme */
+/* Style Sliders */
 div[data-testid="stSlider"] [data-testid="stSliderTrack"] {
     background-color: #e2e8f0 !important;
 }
 
 div[data-testid="stSlider"] [data-testid="stSliderTrack"] > div {
-    background-color: #4f46e5 !important;
+    background-color: #0f172a !important;
 }
 
 div[data-testid="stSlider"] [role="slider"] {
-    background-color: #4f46e5 !important;
-    border: 2px solid #ffffff !important;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1) !important;
-}
-
-/* Style select slider text */
-div[class*="stSelectSlider"] {
-    color: #4f46e5 !important;
-}
-
-/* Expander Overrides for accordion feel */
-div[data-testid="stExpander"] {
     background-color: #ffffff !important;
-    border: 1px solid #e2e8f0 !important;
-    border-radius: 12px !important;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.01) !important;
-    margin-bottom: 12px !important;
-    overflow: hidden !important;
-    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1) !important;
+    border: 2px solid #0f172a !important;
+    box-shadow: none !important;
 }
 
-div[data-testid="stExpander"]:hover {
-    border-color: #cbd5e1 !important;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.03) !important;
-}
-
-div[data-testid="stExpander"] > details > summary {
-    padding: 16px 20px !important;
-    background-color: #ffffff !important;
-    color: #0f172a !important;
-    font-weight: 600 !important;
-    font-size: 15px !important;
-    border: none !important;
-    outline: none !important;
-}
-
-div[data-testid="stExpander"] > details > summary ~ div {
-    padding: 24px !important;
-    border-top: 1px solid #e2e8f0 !important;
-    background-color: #fafafa !important;
-}
-
-/* Hide standard Streamlit alerts default icons for clean custom notifications */
+/* Hide standard Streamlit alerts */
 [data-testid="stNotification"] {
     display: none !important;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }
 </style>
 """, unsafe_allow_html=True)
 
-# Sidebar UI
-st.sidebar.markdown("<div style='height: 20px;'></div>", unsafe_allow_html=True)
-st.sidebar.markdown("<div class='sidebar-title'>TruthLayer AI</div>", unsafe_allow_html=True)
-st.sidebar.markdown("<div class='sidebar-subtitle'>Factual Document Verification Engine</div>", unsafe_allow_html=True)
-st.sidebar.markdown("<div style='text-align: center; font-size: 11px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-top: 8px; margin-bottom: 16px;'>Developed by Satya</div>", unsafe_allow_html=True)
-st.sidebar.markdown("<hr style='margin: 0 0 24px 0; border-color: #e2e8f0;'/>", unsafe_allow_html=True)
+# Navigation Bar Mockup
+st.markdown("""
+<div class="nav-bar">
+    <div class="nav-links">
+        <a class="nav-link" href="#audit">Audit Document</a>
+        <a class="nav-link" href="#engine">Verification Engine</a>
+    </div>
+    <div class="nav-links">
+        <span class="nav-link" style="color: #94a3b8 !important; cursor: default;">Developed by Satya</span>
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
-# API Configuration
-st.sidebar.markdown("### Configuration")
+# Main Title & Subtitle
+st.markdown("<div class='main-title'>TruthLayer AI</div>", unsafe_allow_html=True)
+st.markdown("<div class='subtitle'>A digital layer transforming document verification through human-centered accuracy and live web predictions</div>", unsafe_allow_html=True)
 
 # Try to load API key from environment variable or .env file
 env_key = os.environ.get("GEMINI_API_KEY")
@@ -436,47 +475,27 @@ if "api_key_loaded" not in st.session_state or st.session_state.get("env_key_has
     st.session_state["api_key_loaded"] = env_key if env_key else ""
     st.session_state["env_key_hash"] = env_key
 
-api_key = st.sidebar.text_input(
-    "Gemini API Key", 
-    value=st.session_state["api_key_loaded"], 
-    type="password",
-    help="Pre-configured with a default key, loaded from .env, or paste your own key."
-)
-
-if env_key:
-    st.sidebar.markdown("""
-    <div class='custom-alert custom-alert-success' style='padding: 10px 14px; margin-top: 10px; margin-bottom: 16px; border-radius: 8px;'>
-        <div class='custom-alert-text' style='font-size: 12px;'>API Key loaded from environment file.</div>
-    </div>
-    """, unsafe_allow_html=True)
-else:
-    st.sidebar.markdown("""
-    <div class='custom-alert custom-alert-warning' style='padding: 10px 14px; margin-top: 10px; margin-bottom: 16px; border-radius: 8px;'>
-        <div class='custom-alert-text' style='font-size: 12px;'>Using shared default API key. Daily limits apply.</div>
-    </div>
-    """, unsafe_allow_html=True)
-
-st.sidebar.markdown("---")
-
-# Settings
-st.sidebar.markdown("### Analysis Settings")
-max_search_results = st.sidebar.slider("Web Search Sources", min_value=1, max_value=10, value=4, help="Number of search results analyzed per claim")
-claim_density = st.sidebar.select_slider("Extraction Density", options=["Low", "Medium", "High"], value="Medium", help="How many claims the model extracts from the text")
-
-st.sidebar.markdown("---")
-st.sidebar.markdown("""
-### How it works
-1. **Upload**: Provide any PDF document.
-2. **Extract**: TruthLayer AI scans the document and extracts factual claims, figures, and dates.
-3. **Verify**: The engine performs live web queries via Bing Search.
-4. **Report**: Claims are evaluated and flagged with source citations.
-""")
-
-# Main Layout
-col_header, col_logo = st.columns([5, 1])
-with col_header:
-    st.markdown("<div class='main-title'>TruthLayer AI</div>", unsafe_allow_html=True)
-    st.markdown("<div class='subtitle'>Upload and fact-check marketing collateral, pitches, or technical articles against the live web in real time.</div>", unsafe_allow_html=True)
+# Collapsible Settings Expander at the top
+with st.expander("Settings & Configuration", expanded=False):
+    col_api, col_search, col_density = st.columns([2, 1, 1])
+    
+    with col_api:
+        api_key = st.text_input(
+            "Gemini API Key", 
+            value=st.session_state["api_key_loaded"], 
+            type="password",
+            help="Pre-configured with a default key, loaded from .env, or paste your own key."
+        )
+        if env_key:
+            st.markdown("<div style='font-size: 11px; color: #10b981; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;'>API Key loaded from environment file</div>", unsafe_allow_html=True)
+        else:
+            st.markdown("<div style='font-size: 11px; color: #f59e0b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;'>Using shared default API key</div>", unsafe_allow_html=True)
+            
+    with col_search:
+        max_search_results = st.slider("Web Search Sources", min_value=1, max_value=10, value=4)
+        
+    with col_density:
+        claim_density = st.select_slider("Extraction Density", options=["Low", "Medium", "High"], value="Medium")
 
 # Main File Uploader
 uploaded_file = st.file_uploader("Drop your PDF document here", type=["pdf"])
@@ -505,100 +524,94 @@ if uploaded_file is not None:
         if not api_key:
             st.markdown("""
             <div class='custom-alert custom-alert-error'>
-                <div class='custom-alert-text'>Please configure a valid Gemini API Key in the sidebar to proceed.</div>
+                <div class='custom-alert-text'>Please configure a valid Gemini API Key in the settings panel to proceed.</div>
             </div>
             """, unsafe_allow_html=True)
         else:
             st.session_state.processing = True
             
-            # Progress Container
-            progress_placeholder = st.empty()
+            # Full-screen loader placeholder
+            loader_placeholder = st.empty()
             
+            def update_loader(status_msg):
+                loader_placeholder.markdown(f"""
+                <div class="loader-overlay">
+                    <div class="loader-spinner"></div>
+                    <div class="loader-text">VERIFYING TRUTH LAYER</div>
+                    <div class="loader-subtext">{status_msg}</div>
+                </div>
+                """, unsafe_allow_html=True)
+                
             try:
-                with progress_placeholder.container():
-                    st.markdown("<h3 style='font-size: 20px; font-weight: 700; color: #0f172a; margin-bottom: 12px;'>Audit Pipeline Status</h3>", unsafe_allow_html=True)
-                    p_bar = st.progress(0)
-                    status_text = st.empty()
+                # Step 1: Text extraction
+                update_loader("1/4: Extracting text from PDF...")
+                pdf_text = extract_text_from_pdf(uploaded_file)
+                
+                if not pdf_text:
+                    loader_placeholder.empty()
+                    st.markdown("""
+                    <div class='custom-alert custom-alert-error'>
+                        <div class='custom-alert-text'>Failed to extract text from the PDF file.</div>
+                    </div>
+                    """, unsafe_allow_html=True)
+                    st.session_state.processing = False
+                else:
+                    # Step 2: Claim extraction
+                    update_loader("2/4: Extracting specific factual claims...")
+                    claims = extract_claims(pdf_text, api_key)
                     
-                    # Step 1: Text extraction
-                    status_text.text("1/4: Extracting text from PDF...")
-                    p_bar.progress(10)
-                    pdf_text = extract_text_from_pdf(uploaded_file)
-                    
-                    if not pdf_text:
+                    if not claims:
+                        loader_placeholder.empty()
                         st.markdown("""
-                        <div class='custom-alert custom-alert-error'>
-                            <div class='custom-alert-text'>Failed to extract text from the PDF file.</div>
+                        <div class='custom-alert custom-alert-warning'>
+                            <div class='custom-alert-text'>No verifiable claims found in the document.</div>
                         </div>
                         """, unsafe_allow_html=True)
+                        st.session_state.audit_results = []
                         st.session_state.processing = False
                     else:
-                        # Step 2: Claim extraction
-                        status_text.text("2/4: Extracting specific factual claims...")
-                        p_bar.progress(30)
-                        claims = extract_claims(pdf_text, api_key)
+                        # Step 3: Verify each claim
+                        verified_claims = []
+                        total_claims = len(claims)
                         
-                        if not claims:
-                            st.markdown("""
-                            <div class='custom-alert custom-alert-warning'>
-                                <div class='custom-alert-text'>No verifiable claims found in the document.</div>
-                            </div>
-                            """, unsafe_allow_html=True)
-                            st.session_state.audit_results = []
-                            st.session_state.processing = False
-                        else:
-                            st.markdown(f"""
-                            <div class='custom-alert custom-alert-info'>
-                                <div class='custom-alert-text'>Identified <b>{len(claims)}</b> verifiable claims in the document.</div>
-                            </div>
-                            """, unsafe_allow_html=True)
+                        for idx, claim in enumerate(claims):
+                            claim_text = claim["claim_text"]
+                            context = claim["context"]
+                            category = claim["category"]
                             
-                            # Step 3: Verify each claim
-                            verified_claims = []
-                            total_claims = len(claims)
+                            update_loader(f"3/4: Verifying claim {idx+1}/{total_claims}: \"{claim_text[:40]}...\"")
                             
-                            for idx, claim in enumerate(claims):
-                                claim_text = claim["claim_text"]
-                                context = claim["context"]
-                                category = claim["category"]
-                                
-                                status_text.text(f"3/4: Verifying claim {idx+1}/{total_claims}: \"{claim_text[:50]}...\"")
-                                # Progress from 30% to 90%
-                                progress_val = int(30 + (idx / total_claims) * 60)
-                                p_bar.progress(progress_val)
-                                
-                                # Generate optimized search query
-                                search_query = generate_search_query(claim_text, api_key)
-                                
-                                # Live search
-                                search_results = search_web_ddg_fallback(search_query, max_results=max_search_results)
-                                
-                                # Gemini verification
-                                verification = verify_claim(claim_text, context, search_results, api_key)
-                                
-                                verified_claims.append({
-                                    "claim_id": claim["claim_id"],
-                                    "claim_text": claim_text,
-                                    "context": context,
-                                    "category": category,
-                                    "verdict": verification.get("verdict", "False"),
-                                    "explanation": verification.get("explanation", ""),
-                                    "correct_facts": verification.get("correct_facts", ""),
-                                    "sources": verification.get("sources", [])
-                                })
-                                
-                            # Step 4: Finalize
-                            status_text.text("4/4: Finalizing audit report...")
-                            p_bar.progress(100)
+                            # Generate optimized search query
+                            search_query = generate_search_query(claim_text, api_key)
                             
-                            st.session_state.audit_results = verified_claims
-                            st.session_state.processing = False
+                            # Live search
+                            search_results = search_web_ddg_fallback(search_query, max_results=max_search_results)
+                            
+                            # Gemini verification
+                            verification = verify_claim(claim_text, context, search_results, api_key)
+                            
+                            verified_claims.append({
+                                "claim_id": claim["claim_id"],
+                                "claim_text": claim_text,
+                                "context": context,
+                                "category": category,
+                                "verdict": verification.get("verdict", "False"),
+                                "explanation": verification.get("explanation", ""),
+                                "correct_facts": verification.get("correct_facts", ""),
+                                "sources": verification.get("sources", [])
+                            })
+                            
+                        # Step 4: Finalize
+                        update_loader("4/4: Finalizing audit report...")
+                        
+                        st.session_state.audit_results = verified_claims
+                        st.session_state.processing = False
                 
-                # Clear progress box and reload UI
-                progress_placeholder.empty()
+                # Clear progress loader and refresh page to show dashboard
+                loader_placeholder.empty()
                 st.rerun()
             except Exception as e:
-                progress_placeholder.empty()
+                loader_placeholder.empty()
                 st.session_state.processing = False
                 st.markdown("""
                 <div class='custom-alert custom-alert-error'>
@@ -612,7 +625,7 @@ if uploaded_file is not None:
                         <div class='custom-alert-text'>
                             <b>Gemini API Rate Limit or Quota Exceeded (429)</b>: The active API key has reached its requests-per-minute rate limit (20 RPM) or daily request limit.<br/><br/>
                             <b>How to fix:</b><br/>
-                            - Wait 10-15 seconds and try clicking <b>Start Auditing Document</b> again (free keys have a 20 requests-per-minute limit).<br/>
+                            - Wait 10-15 seconds and try clicking <b>Start Auditing Document</b> again.<br/>
                             - Make sure your key is active in Google AI Studio.
                         </div>
                     </div>
@@ -620,7 +633,7 @@ if uploaded_file is not None:
                 elif "API_KEY_INVALID" in err_msg or "invalid" in err_msg.lower():
                     st.markdown("""
                     <div class='custom-alert custom-alert-warning'>
-                        <div class='custom-alert-text'><b>Invalid API Key</b>: The configured Gemini API Key is invalid. Please verify the key in your .env file or sidebar.</div>
+                        <div class='custom-alert-text'><b>Invalid API Key</b>: The configured Gemini API Key is invalid. Please verify the key in your settings panel.</div>
                     </div>
                     """, unsafe_allow_html=True)
                 else:
@@ -650,62 +663,49 @@ if st.session_state.audit_results is not None:
         truth_score = int((verified_count / total_claims) * 100) if total_claims > 0 else 0
         
         # Display Dashboard Header
-        st.markdown("<h2 style='font-size: 26px; font-weight: 800; color: #0f172a; margin-top: 32px; margin-bottom: 20px;'>Document Audit Dashboard</h2>", unsafe_allow_html=True)
+        st.markdown("<h2 style='font-size: 28px; font-weight: 800; color: #0f172a; margin-top: 48px; margin-bottom: 24px; text-transform: uppercase; letter-spacing: 1px;'>Document Audit Dashboard</h2>", unsafe_allow_html=True)
         
-        # Metric Cards Layout
-        col_total, col_verified, col_inaccurate, col_false = st.columns(4)
+        # Metric Cards Layout (Sidewave Stats Grid style)
+        st.markdown(f"""
+        <div class="stats-grid">
+            <div class="stats-item">
+                <div class="stats-number color-total">{total_claims}</div>
+                <div class="stats-label">Claims Audited</div>
+            </div>
+            <div class="stats-item">
+                <div class="stats-number color-verified">{verified_count}</div>
+                <div class="stats-label">Verified Claims</div>
+            </div>
+            <div class="stats-item">
+                <div class="stats-number color-inaccurate">{inaccurate_count}</div>
+                <div class="stats-label">Inaccurate Stats</div>
+            </div>
+            <div class="stats-item">
+                <div class="stats-number color-false">{false_count}</div>
+                <div class="stats-label">False Assertions</div>
+            </div>
+        </div>
+        """, unsafe_allow_html=True)
         
-        with col_total:
-            st.markdown(f"""
-            <div class="metric-card metric-card-1">
-                <div class="metric-value color-total">{total_claims}</div>
-                <div class="metric-label">Claims Audited</div>
-            </div>
-            """, unsafe_allow_html=True)
-            
-        with col_verified:
-            st.markdown(f"""
-            <div class="metric-card metric-card-2">
-                <div class="metric-value color-verified">{verified_count}</div>
-                <div class="metric-label">Verified Claims</div>
-            </div>
-            """, unsafe_allow_html=True)
-            
-        with col_inaccurate:
-            st.markdown(f"""
-            <div class="metric-card metric-card-3">
-                <div class="metric-value color-inaccurate">{inaccurate_count}</div>
-                <div class="metric-label">Inaccurate Stats</div>
-            </div>
-            """, unsafe_allow_html=True)
-            
-        with col_false:
-            st.markdown(f"""
-            <div class="metric-card metric-card-4">
-                <div class="metric-value color-false">{false_count}</div>
-                <div class="metric-label">False Assertions</div>
-            </div>
-            """, unsafe_allow_html=True)
-            
         # Truth Score Section
         st.markdown(f"""
         <div class="truth-score-container">
-            <div style="display: flex; justify-content: space-between; font-weight: 600;">
+            <div style="display: flex; justify-content: space-between; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 13px;">
                 <span>Document Truth Score</span>
-                <span class="color-verified" style="font-weight: 700;">{truth_score}%</span>
+                <span class="color-verified">{truth_score}%</span>
             </div>
             <div class="truth-score-bg">
                 <div class="truth-score-fill" style="width: {truth_score}%;"></div>
             </div>
-            <p style="font-size: 13px; color: #64748b; margin-top: 8px; margin-bottom: 0; font-weight: 400;">
+            <p style="font-size: 13px; color: #64748b; margin-top: 12px; margin-bottom: 0; font-weight: 500;">
                 The Truth Score represents the percentage of verified statements relative to all audited factual assertions in the PDF.
             </p>
         </div>
         """, unsafe_allow_html=True)
         
         # Interactive filters
-        st.markdown("<div style='height: 24px;'></div>", unsafe_allow_html=True)
-        st.markdown("<h3 style='font-size: 20px; font-weight: 700; color: #0f172a; margin-top: 24px; margin-bottom: 12px;'>Audited Claims</h3>", unsafe_allow_html=True)
+        st.markdown("<div style='height: 32px;'></div>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-size: 20px; font-weight: 700; color: #0f172a; margin-top: 24px; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;'>Audited Claims</h3>", unsafe_allow_html=True)
         
         filter_col_verdict, filter_col_cat = st.columns(2)
         
@@ -775,7 +775,7 @@ if st.session_state.audit_results is not None:
                             
         # Export options
         st.write("---")
-        st.markdown("<h3 style='font-size: 20px; font-weight: 700; color: #0f172a; margin-top: 24px; margin-bottom: 12px;'>Export Audit Report</h3>", unsafe_allow_html=True)
+        st.markdown("<h3 style='font-size: 20px; font-weight: 700; color: #0f172a; margin-top: 40px; margin-bottom: 16px; text-transform: uppercase; letter-spacing: 1px;'>Export Audit Report</h3>", unsafe_allow_html=True)
         
         # Format results as pandas DataFrame
         df_export = pd.DataFrame([{
