@@ -1,0 +1,54 @@
+ 
+ 
+ 
+ 
+ 
+Assessment 
+ 
+Part 1 
+ 
+Design a detailed feature for the GEO product (Product context: GEO (Generative Engine Optimization) is an 
+analytics platform that helps brands measure and grow their visibility on all the renowned LLMs.) and compare 
+multiple tools available in the market. 
+ 
+Product Strategy & Monetization Roadmap: Starting from the current state of AI 
+search, define a short -term (3 months) and long -term (up to a year).  
+ 
+Submission format - PPT file (Part 1) 
+ 
+Part 2 
+ 
+The "Fact-Check" Agent 
+ 
+The Objective: Build a "Fact-Checking Web App" that automates claim verification. 
+ 
+Marketing content often contains outdated or hallucinated stats; your tool must act as a "Truth Layer" reading 
+a PDF, cross-referencing claims against live web data, and flagging inaccuracies. Please find the pdf attached to 
+this. 
+ 
+The Task: Build a deployed web app where users upload a PDF for Automated Factchecking. The system must: 
+ 
+Extract: Identify specific claims (stats, dates, financial/technical figures) from the pdf.  
+ 
+Verify: Search the live web to confirm accuracy. 
+ 
+Report: Flag claims as Verified (matches data), Inaccurate (e.g., outdated stats), or False (no evidence found).  
+Technical Requirements 
+ 
+Interface: A simple frontend (Streamlit, Gradio, or React) for PDF upload.  
+ 
+Deployment (Mandatory): The final solution must be live (e.g., Streamlit Cloud, Vercel, Render). We must be 
+able to visit a URL and test it with our own PDF. Local-only scripts will be rejected. 
+ 
+Evaluation Criteria 
+We will test your submission by uploading a "Trap Document" containing intentional lies and outdated 
+statistics. 
+ 
+Success = Successfully flagging the fake stats + Providing the correct "real" facts.  
+ 
+ 
+Submission Deliverables 
+Reply with a single document or email containing: 
+• The Deployed App Link: (e.g., https://my-assignment.streamlit.app) 
+• GitHub Repository: Clean code with requirements.txt and a ReadMe.  
+• Demo Video: A 30-second screen recording (in case your API credits run out) 

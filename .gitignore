@@ -1,0 +1,8 @@
+__pycache__/
+*.pyc
+*.log
+google_debug.html
+Assessment_Product Management Trainee.pdf
+.env
+.env.local
+.vscode/
